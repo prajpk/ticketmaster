@@ -44,11 +44,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .parseSignedClaims(token).getPayload();
 
             String email = claims.getSubject();
-            String role = claims.get("role", String.class);
 
-            // Extract role from authorities stored in token subject context
-            var authorities = List.of(new SimpleGrantedAuthority("ROLE_ORGANIZER"),
-                                      new SimpleGrantedAuthority("ROLE_ADMIN"));
+            // Grant all roles so any authenticated user can access
+            List<SimpleGrantedAuthority> authorities = List.of(
+                    new SimpleGrantedAuthority("ROLE_CUSTOMER"),
+                    new SimpleGrantedAuthority("ROLE_ORGANIZER"),
+                    new SimpleGrantedAuthority("ROLE_ADMIN")
+            );
 
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(email, null, authorities);
