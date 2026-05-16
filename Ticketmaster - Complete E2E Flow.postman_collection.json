@@ -1,0 +1,1257 @@
+{
+  "info": {
+    "_postman_id": "5f1a6e5b-203e-49a2-bfc6-0a511087b330",
+    "name": "Ticketmaster - Complete E2E Flow",
+    "description": "Complete end-to-end flow for all 5 microservices. Run in sequence - variables auto-populate from responses.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "20229210",
+    "_collection_link": "https://go.postman.co/collection/20229210-5f1a6e5b-203e-49a2-bfc6-0a511087b330?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - USER SERVICE",
+      "item": [
+        {
+          "name": "01. Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.accessToken) {",
+                  "  pm.collectionVariables.set('token', res.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.refreshToken);",
+                  "  pm.collectionVariables.set('userId', res.user.id);",
+                  "  console.log('Token saved:', res.accessToken.substring(0, 20) + '...');",
+                  "  console.log('Refresh Token saved:', res.refreshToken.substring(0, 20) + '...');",
+                  "  console.log('UserId saved:', res.user.id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Has accessToken', () => pm.expect(res.accessToken).to.exist);",
+                  "pm.test('Has refreshToken', () => pm.expect(res.refreshToken).to.exist);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"organiser@ticketmaster.com\",\n  \"password\": \"password123\",\n  \"fullName\": \"Event Organiser\"\n}"
+            },
+            "url": {
+              "raw": "{{base_user}}/api/v1/auth/register",
+              "host": [
+                "{{base_user}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "register"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "02. Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.accessToken) {",
+                  "  pm.collectionVariables.set('token', res.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.refreshToken);",
+                  "  pm.collectionVariables.set('userId', res.user.id);",
+                  "  console.log('Token saved:', res.accessToken.substring(0, 20) + '...');",
+                  "  console.log('Refresh Token saved:', res.refreshToken.substring(0, 20) + '...');",
+                  "  console.log('UserId saved:', res.user.id);",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has accessToken', () => pm.expect(res.accessToken).to.exist);",
+                  "pm.test('Has refreshToken', () => pm.expect(res.refreshToken).to.exist);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"organiser@ticketmaster.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_user}}/api/v1/auth/login",
+              "host": [
+                "{{base_user}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "04. Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.accessToken) {",
+                  "  pm.collectionVariables.set('token', res.accessToken);",
+                  "  pm.collectionVariables.set('refreshToken', res.refreshToken);",
+                  "  pm.collectionVariables.set('userId', res.user.id);",
+                  "  console.log('Token saved:', res.accessToken.substring(0, 20) + '...');",
+                  "  console.log('Refresh Token saved:', res.refreshToken.substring(0, 20) + '...');",
+                  "  console.log('UserId saved:', res.user.id);",
+                  "}",
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Has accessToken', () => pm.expect(res.accessToken).to.exist);",
+                  "pm.test('Has refreshToken', () => pm.expect(res.refreshToken).to.exist);",
+                  ""
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refreshToken\": \"{{refreshToken}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_user}}/api/v1/auth/refresh",
+              "host": [
+                "{{base_user}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "refresh"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - EVENT MANAGEMENT SERVICE",
+      "item": [
+        {
+          "name": "05. Create Venue",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) {",
+                  "  pm.collectionVariables.set('venueId', res.id);",
+                  "  console.log('VenueId saved:', res.id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Has venueId', () => pm.expect(res.id).to.exist);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Mumbai Arena\",\n  \"city\": \"Mumbai\",\n  \"address\": \"Andheri West, Mumbai\",\n  \"state\": \"Maharashtra\",\n  \"country\": \"India\",\n  \"capacity\": 5000\n}"
+            },
+            "url": {
+              "raw": "{{base_event}}/api/v1/venues",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "venues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "06. Get All Venues",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Venues list exists', () => pm.expect(res).to.be.an('array'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_event}}/api/v1/venues",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "venues"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "07. Create Section",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) {",
+                  "  pm.collectionVariables.set('sectionId', res.id);",
+                  "  console.log('SectionId saved:', res.id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Has sectionId', () => pm.expect(res.id).to.exist);"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"VIP\",\n  \"sortOrder\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_event}}/api/v1/venues/{{venueId}}/sections",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "venues",
+                "{{venueId}}",
+                "sections"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "08. Get All Sections",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "if (res.length > 0) {",
+                  "  pm.collectionVariables.set('sectionId', res[0].id);",
+                  "  console.log('SectionId from list:', res[0].id);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_event}}/api/v1/venues/{{venueId}}/sections",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "venues",
+                "{{venueId}}",
+                "sections"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "09. Generate Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.test('Seats generated', () => pm.expect(res.length).to.be.greaterThan(0));",
+                  "console.log('Generated', res.length, 'seats');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"rows\": [\"A\", \"B\", \"C\"],\n  \"seatsPerRow\": 10\n}"
+            },
+            "url": {
+              "raw": "{{base_event}}/api/v1/venues/{{venueId}}/sections/{{sectionId}}/seats/generate",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "venues",
+                "{{venueId}}",
+                "sections",
+                "{{sectionId}}",
+                "seats",
+                "generate"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "10. Create Event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.id) {",
+                  "  pm.collectionVariables.set('eventId', res.id);",
+                  "  console.log('EventId saved:', res.id);",
+                  "}",
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Status is DRAFT', () => pm.expect(res.status).to.equal('DRAFT'));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"venueId\": \"{{venueId}}\",\n  \"title\": \"Coldplay Mumbai 2026\",\n  \"description\": \"World tour concert\",\n  \"category\": \"Music\",\n  \"startsAt\": \"2026-12-01T18:00:00+05:30\",\n  \"endsAt\": \"2026-12-01T22:00:00+05:30\"\n}"
+            },
+            "url": {
+              "raw": "{{base_event}}/api/v1/organiser/events",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "organiser",
+                "events"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "11. Configure Pricing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Pricing configured', () => pm.expect(res.length).to.be.greaterThan(0));",
+                  "console.log('Pricing set:', res[0].priceCents, res[0].currency);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "[\n  {\n    \"sectionId\": \"{{sectionId}}\",\n    \"priceCents\": 150000,\n    \"currency\": \"INR\"\n  }\n]"
+            },
+            "url": {
+              "raw": "{{base_event}}/api/v1/organiser/events/{{eventId}}/pricing",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "organiser",
+                "events",
+                "{{eventId}}",
+                "pricing"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "12. Initialize Inventory",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "console.log('Inventory initialized');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_event}}/api/v1/organiser/events/{{eventId}}/inventory/init",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "organiser",
+                "events",
+                "{{eventId}}",
+                "inventory",
+                "init"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "13. Publish Event",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Status is PUBLISHED', () => pm.expect(res.status).to.equal('PUBLISHED'));",
+                  "console.log('Event published! Kafka message sent to seats-allocation-service');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_event}}/api/v1/organiser/events/{{eventId}}/publish",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "organiser",
+                "events",
+                "{{eventId}}",
+                "publish"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "14. Browse Public Events",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "console.log('Public events fetched - no token needed');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_event}}/api/v1/events/public?page=0&size=10",
+              "host": [
+                "{{base_event}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "events",
+                "public"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - SEATS ALLOCATION SERVICE",
+      "item": [
+        {
+          "name": "15. Get Available Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Seats available', () => pm.expect(res.length).to.be.greaterThan(0));",
+                  "if (res.length >= 2) {",
+                  "  pm.collectionVariables.set('seatId1', res[2].id);",
+                  "  pm.collectionVariables.set('seatId2', res[3].id);",
+                  "  console.log('SeatId1 saved:', res[2].id, '(' + res[2].seatCode + ')');",
+                  "  console.log('SeatId2 saved:', res[3].id, '(' + res[3].seatCode + ')');",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_allocation}}/api/v1/events/{{eventId}}/seats",
+              "host": [
+                "{{base_allocation}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "events",
+                "{{eventId}}",
+                "seats"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "17. Lock Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Seats locked', () => pm.expect(res.lockedSeats.length).to.equal(2));",
+                  "console.log('Seats locked until:', res.lockExpiresAt);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{userId}}\",\n  \"seatIds\": [\"{{seatId1}}\", \"{{seatId2}}\"],\n  \"idempotencyKey\": \"lock-test-manual-001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_allocation}}/api/v1/internal/seats/{{eventId}}/locks",
+              "host": [
+                "{{base_allocation}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "seats",
+                "{{eventId}}",
+                "locks"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "18. Confirm Seats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Seats booked', () => res.forEach(s => pm.expect(s.status).to.equal('BOOKED')));",
+                  "console.log('Seats confirmed as BOOKED');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bookingId\": \"00000000-0000-0000-0000-000000000001\",\n  \"eventId\": \"{{eventId}}\",\n  \"seatIds\": [\"{{seatId1}}\", \"{{seatId2}}\"],\n  \"idempotencyKey\": \"confirm-test-manual-001\"\n}"
+            },
+            "url": {
+              "raw": "{{base_allocation}}/api/v1/internal/seats/confirm",
+              "host": [
+                "{{base_allocation}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "seats",
+                "confirm"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - BOOKING SERVICE",
+      "item": [
+        {
+          "name": "19. Checkout (lock + pay)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "if (res.bookingId) {",
+                  "  pm.collectionVariables.set('bookingId', res.bookingId);",
+                  "  pm.collectionVariables.set('paymentId', res.paymentId);",
+                  "  pm.collectionVariables.set('providerOrderId', res.providerOrderId);",
+                  "  console.log('BookingId saved:', res.bookingId);",
+                  "  console.log('PaymentId saved:', res.paymentId);",
+                  "  console.log('ProviderOrderId saved:', res.providerOrderId);",
+                  "}",
+                  "pm.test('Has bookingId', () => pm.expect(res.bookingId).to.exist);",
+                  "pm.test('Has providerOrderId', () => pm.expect(res.providerOrderId).to.exist);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{userId}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"eventId\": \"{{eventId}}\",\n  \"seatIds\": [\"{{seatId1}}\", \"{{seatId2}}\"]\n}"
+            },
+            "url": {
+              "raw": "{{base_booking}}/api/v1/bookings/checkout",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "checkout"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "20. Get My Bookings (PENDING)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has bookings', () => pm.expect(res.length).to.be.greaterThan(0));",
+                  "console.log('Booking status:', res[0] ? res[0].status : 'none');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{userId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_booking}}/api/v1/bookings",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - PAYMENT SERVICE",
+      "item": [
+        {
+          "name": "21. Simulate Razorpay Webhook (SUCCESS)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "console.log('Webhook processed!');",
+                  "console.log('Flow: payment SUCCESS -> booking CONFIRMED -> seats BOOKED -> tickets ISSUED');",
+                  "console.log('Wait 1-2 seconds then check booking status...');"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"event\": \"payment.captured\",\n  \"providerEventId\": \"evt_{{$randomUUID}}\",\n  \"providerPaymentId\": \"pay_{{$randomUUID}}\",\n  \"providerOrderId\": \"{{providerOrderId}}\",\n  \"status\": \"SUCCESS\"\n}"
+            },
+            "url": {
+              "raw": "{{base_payment}}/api/v1/internal/payments/webhook",
+              "host": [
+                "{{base_payment}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "payments",
+                "webhook"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "22. Get Payment Details",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Payment SUCCESS', () => pm.expect(res.status).to.equal('SUCCESS'));",
+                  "console.log('Payment status:', res.status);",
+                  "console.log('Amount:', res.amountMinor / 100, res.currency);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_payment}}/api/v1/payments/{{paymentId}}",
+              "host": [
+                "{{base_payment}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "payments",
+                "{{paymentId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 - BOOKING CONFIRMED + TICKETS",
+      "item": [
+        {
+          "name": "Confirm Booking",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"paymentId\": \"{{paymentId}}\", \"bookingId\": \"{{bookingId}}\", \"paymentStatus\": \"SUCCESS\"}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8082/api/v1/internal/bookings/finalize",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "bookings",
+                "finalize"
+              ]
+            },
+            "description": "Generated from cURL: curl -X POST http://localhost:8082/api/v1/internal/bookings/finalize  \r\n  -H \"Content-Type: application/json\"  \r\n  -d \"{\\\"paymentId\\\": \\\"PAYMENT_ID\\\", \\\"bookingId\\\": \\\"BOOKING_ID\\\", \\\"paymentStatus\\\": \\\"SUCCESS\\\"}\""
+          },
+          "response": []
+        },
+        {
+          "name": "23. Get My Bookings (CONFIRMED)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "const confirmed = res.find(b => b.status === 'CONFIRMED');",
+                  "if (confirmed) {",
+                  "  pm.collectionVariables.set('bookingId', confirmed.id);",
+                  "  console.log('Confirmed booking found:', confirmed.id);",
+                  "} else {",
+                  "  console.log('Booking statuses:', res.map(b => b.status));",
+                  "}",
+                  "pm.test('Has CONFIRMED booking', () => pm.expect(confirmed).to.exist);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{userId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_booking}}/api/v1/bookings",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "24. Get Tickets for Booking",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Has 2 tickets', () => pm.expect(res.length).to.equal(2));",
+                  "pm.test('Tickets ISSUED', () => res.forEach(t => pm.expect(t.status).to.equal('ISSUED')));",
+                  "if (res.length > 0) {",
+                  "  pm.collectionVariables.set('ticketCode', res[0].ticketCode);",
+                  "  console.log('TicketCode saved:', res[0].ticketCode);",
+                  "  console.log('TicketNumber:', res[0].ticketNumber);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "X-User-Id",
+                "value": "{{userId}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_booking}}/api/v1/bookings/{{bookingId}}/tickets",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "bookings",
+                "{{bookingId}}",
+                "tickets"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "25. Scan Ticket (Gate Agent)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "pm.test('Ticket SCANNED', () => pm.expect(res.status).to.equal('SCANNED'));",
+                  "console.log('Ticket scanned successfully! Code:', res.ticketCode);",
+                  "console.log('Seat:', res.seatCode);"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_booking}}/api/v1/tickets/scan/{{ticketCode}}",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                "scan",
+                "{{ticketCode}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "26. Scan Same Ticket Again (should fail)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 400 - already scanned', () => pm.response.to.have.status(400));",
+                  "console.log('Correctly rejected duplicate scan');"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_booking}}/api/v1/tickets/scan/{{ticketCode}}",
+              "host": [
+                "{{base_booking}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "tickets",
+                "scan",
+                "{{ticketCode}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_user",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "base_event",
+      "value": "http://localhost:8081"
+    },
+    {
+      "key": "base_booking",
+      "value": "http://localhost:8082"
+    },
+    {
+      "key": "base_allocation",
+      "value": "http://localhost:8083"
+    },
+    {
+      "key": "base_payment",
+      "value": "http://localhost:8084"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userId",
+      "value": ""
+    },
+    {
+      "key": "venueId",
+      "value": ""
+    },
+    {
+      "key": "sectionId",
+      "value": ""
+    },
+    {
+      "key": "eventId",
+      "value": ""
+    },
+    {
+      "key": "seatId1",
+      "value": ""
+    },
+    {
+      "key": "seatId2",
+      "value": ""
+    },
+    {
+      "key": "bookingId",
+      "value": ""
+    },
+    {
+      "key": "paymentId",
+      "value": ""
+    },
+    {
+      "key": "providerOrderId",
+      "value": ""
+    },
+    {
+      "key": "ticketCode",
+      "value": ""
+    },
+    {
+      "key": "refreshToken",
+      "value": ""
+    }
+  ]
+}
