@@ -3,24 +3,6 @@
 A production-grade event ticketing backend inspired by Ticketmaster, built as a **Java Spring Boot microservices** system. 
 Supports user authentication, venue and event management, seat allocation with locking, payment processing, and ticket issuance.
 
-## Architecture Overview
-
-┌─────────────────────────────────────────────────────────────────┐
-│                        CLIENT (Postman)                         │
-└──────────┬──────────┬──────────┬──────────┬─────────────────────┘
-           │          │          │          │
-    :8080  │   :8081  │   :8082  │   :8083  │  :8084
-     ┌─────▼──┐ ┌─────▼──┐ ┌────▼───┐ ┌────▼───┐ ┌──────────┐
-     │  user  │ │ event  │ │booking │ │ seats  │ │ payment  │
-     │service │ │  mgmt  │ │service │ │ alloc  │ │ service  │
-     └────────┘ └────────┘ └────────┘ └────────┘ └──────────┘
-          │          │          │          │            │
-          │          │ Kafka    │   REST   │    REST    │
-          │          └──────────►          ◄────────────┘
-          │                               │
-     auth_db    event_db   booking_db  allocation_db  payment_db
-     (PostgreSQL per service)
-
 ## Tech Stack
 
 | Category       | Technology                  |
@@ -136,9 +118,13 @@ Or
 Open Command prompt from root folder and run following commands
 
 start "user-service" cmd /k "D: && cd user-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+
 start "event-management-service" cmd /k "d: && cd event-management-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+
 start "seats-allocation-service" cmd /k "D: && cd seats-allocation-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+
 start "payment-service" cmd /k "D: && cd payment-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+
 start "booking-service" cmd /k "D: && cd booking-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 
 This will open 5 new terminals in one go, with header, so it will be easier to find errors.
