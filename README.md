@@ -118,15 +118,15 @@ Or
 Open Command prompt from root folder and run following commands
 
 ```bash
-start "user-service" cmd /k "D: && cd user-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+start "user-service" cmd /k "cd user-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 
-start "event-management-service" cmd /k "d: && cd event-management-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+start "event-management-service" cmd /k "cd event-management-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 
-start "seats-allocation-service" cmd /k "D: && cd seats-allocation-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+start "seats-allocation-service" cmd /k "cd seats-allocation-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 
-start "payment-service" cmd /k "D: && cd payment-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+start "payment-service" cmd /k "cd payment-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 
-start "booking-service" cmd /k "D: && cd booking-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
+start "booking-service" cmd /k "cd booking-service && mvn clean package -DskipTests && mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Duser.timezone=UTC""
 ```
 
 This will open 5 new terminals in one go, with header, so it will be easier to find errors.
